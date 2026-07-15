@@ -1,0 +1,15 @@
+# Local environment variables (contains database passwords!)
+.env
+
+# Ignore all raw data files and folders
+data/raw/
+data/processed/
+*.csv
+*.xlsx
+
+# Python system/cache files
+__pycache__/
+*.pyc
+.venv/
+.vscode/
+.ipynb_checkpoints/
