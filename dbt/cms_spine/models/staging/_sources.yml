@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw CMS/Census/HUD tables loaded as-is, before any cleaning.
+    schema: raw
+    tables:
+      - name: medicare_inpatient
+        description: CMS Medicare Inpatient Hospitals by Provider and DRG.
+      - name: cost_report
+        description: CMS Hospital Cost Report, one row per CCN per fiscal year.
+      - name: hospital_general_info
+        description: CMS Hospital General Information (Care Compare).
+      - name: census_acs
+        description: Census ACS 5-year estimates by CBSA.
+      - name: zip_cbsa_crosswalk
+        description: HUD ZIP-to-CBSA crosswalk with residential/business/other address ratios.
