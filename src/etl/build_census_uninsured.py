@@ -29,7 +29,7 @@ def main():
             CREATE TABLE staging.census_uninsured_clean AS
             SELECT
                 "NAME" AS name,
-                "{CBSA_COL}" AS cbsa,
+                "{CBSA_COL}" AS cbsa_code,
                 "{UNIVERSE_COL}" AS universe,
                 ({uninsured_sum}) AS uninsured_count,
                 ({uninsured_sum})::numeric / "{UNIVERSE_COL}" AS uninsured_rate
