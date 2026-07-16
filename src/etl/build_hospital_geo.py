@@ -4,6 +4,12 @@ Some ZIPs span multiple CBSAs, so for each hospital we keep only the
 crosswalk row with the largest res_ratio (its dominant CBSA). This is a
 LEFT JOIN so hospitals with no crosswalk match are kept (with a NULL
 cbsa_code) rather than silently dropped.
+
+CBSA '99999' is HUD's sentinel for "not in any metro/micro area" and
+never appears in census_acs, so it's excluded before picking the
+largest res_ratio -- otherwise a real CBSA can lose to the non-metro
+placeholder for ZIPs that are mostly rural. Hospitals whose ZIP has no
+real CBSA at all still end up with a NULL cbsa_code, which is correct.
 """
 
 import os
@@ -42,6 +48,7 @@ def main():
                 SELECT z.cbsa, z.res_ratio
                 FROM raw.zip_cbsa_crosswalk z
                 WHERE z.geoid = h."ZIP Code"
+                AND z.cbsa <> '99999'
                 ORDER BY z.res_ratio DESC
                 LIMIT 1
             ) best ON TRUE
