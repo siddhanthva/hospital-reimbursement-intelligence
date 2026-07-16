@@ -13,3 +13,8 @@ __pycache__/
 .venv/
 .vscode/
 .ipynb_checkpoints/
+
+# dbt generated artifacts (any dbt project under dbt/)
+dbt/**/target/
+dbt/**/logs/
+dbt/**/dbt_packages/
