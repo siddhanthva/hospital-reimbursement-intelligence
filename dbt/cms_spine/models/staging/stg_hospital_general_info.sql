@@ -16,7 +16,6 @@ cleaned as (
         "ZIP Code"                                            as zip_code,
         upper(replace(trim("County/Parish"), ' ', ''))        as county,
         "Telephone Number"                                    as phone_number,
-        "Hospital Type"                                        as hospital_type,
         "Hospital Ownership"                                   as hospital_ownership,
         "Emergency Services"                                   as emergency_services,
         "Meets criteria for birthing friendly designation"     as birthing_friendly_designation,

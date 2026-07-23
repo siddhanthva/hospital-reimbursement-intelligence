@@ -7,6 +7,9 @@ data/processed/
 *.csv
 *.xlsx
 
+# ...except dbt seeds, which are source-controlled lookup tables, not data dumps
+!dbt/**/seeds/**/*.csv
+
 # Python system/cache files
 __pycache__/
 *.pyc
@@ -14,7 +17,7 @@ __pycache__/
 .vscode/
 .ipynb_checkpoints/
 
-# dbt generated artifacts (any dbt project under dbt/)
-dbt/**/target/
-dbt/**/logs/
-dbt/**/dbt_packages/
+# dbt generated artifacts (any dbt project, any depth)
+target/
+logs/
+dbt_packages/

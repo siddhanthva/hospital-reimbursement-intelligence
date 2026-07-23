@@ -9,12 +9,6 @@ cleaned as (
 
     select
         "Rndrng_Prvdr_CCN"          as ccn,
-        "Rndrng_Prvdr_Org_Name"     as provider_name,
-        "Rndrng_Prvdr_City"         as city,
-        "Rndrng_Prvdr_St"           as street_address,
-        "Rndrng_Prvdr_State_FIPS"   as state_fips,
-        "Rndrng_Prvdr_Zip5"         as zip_code,
-        "Rndrng_Prvdr_State_Abrvtn" as state,
         "Rndrng_Prvdr_RUCA"         as ruca_code,
         "Rndrng_Prvdr_RUCA_Desc"    as ruca_description,
         "DRG_Cd"                    as drg_code,

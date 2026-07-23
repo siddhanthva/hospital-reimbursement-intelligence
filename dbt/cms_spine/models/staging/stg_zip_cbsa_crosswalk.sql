@@ -10,12 +10,7 @@ cleaned as (
     select
         geoid                as zip_code,
         cbsa                 as cbsa_code,
-        city,
-        state,
-        res_ratio,
-        bus_ratio,
-        oth_ratio,
-        tot_ratio
+        res_ratio
     from source_data
     where cbsa <> '99999'
 
