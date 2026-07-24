@@ -38,7 +38,15 @@ renamed as (
         "Allowable DSH Percentage"                       as allowable_dsh_percentage,
         "Cost To Charge Ratio"                           as cost_to_charge_ratio,
         "Net Income"                                     as net_income,
-        "Net Income from Service to Patients"            as net_income_from_service_to_patients
+        "Net Income from Service to Patients"            as net_income_from_service_to_patients,
+        -- Revenue denominator for charity/uncompensated-care ratios (Day 7).
+        -- Net, not Total Patient Revenue: Total Patient Revenue is gross/
+        -- pre-discount (avg ~$978M, ~5x avg Total Costs across raw.cost_report),
+        -- while Net Patient Revenue = Total Patient Revenue - Contractual
+        -- Allowance (verified exact on a sample) and tracks Total Costs at a
+        -- comparable scale (avg ~$238M vs ~$193M) -- the one hospitals actually
+        -- expect to collect.
+        "Net Patient Revenue"                            as net_patient_revenue
     from source_data
 
 ),
@@ -80,6 +88,7 @@ select
     allowable_dsh_percentage,
     cost_to_charge_ratio,
     net_income,
-    net_income_from_service_to_patients
+    net_income_from_service_to_patients,
+    net_patient_revenue
 from deduped
 where rn = 1

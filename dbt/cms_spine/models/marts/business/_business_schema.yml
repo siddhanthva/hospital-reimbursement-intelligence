@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: mart_reimbursement_gap
+    description: >
+      Grain is hospital x DRG. derived_cost = charges x cost_to_charge_ratio;
+      margin = medicare_payment - derived_cost. Hospitals with no usable CCR
+      are excluded (see model SQL comment) so margin/derived_cost should
+      never be NULL here.
+    columns:
+      - name: hospital_key
+        tests:
+          - not_null
+      - name: drg_key
+        tests:
+          - not_null
+      - name: service_line
+        tests:
+          - not_null
+      - name: derived_cost
+        tests:
+          - not_null
+      - name: margin
+        tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - hospital_key
+              - drg_key
+
+  - name: mart_service_line_margin
+    description: >
+      Grain is service_line x metro (metro_name NULL = non-metro hospitals).
+      Ranking columns are intentionally NULL for groups under the 30-discharge
+      volume threshold (see model SQL comment) -- not_null on those two is
+      scoped to meets_volume_threshold = true rows only.
+    columns:
+      - name: service_line_margin_key
+        tests:
+          - not_null
+          - unique
+      - name: service_line
+        tests:
+          - not_null
+      - name: avg_margin
+        tests:
+          - not_null
+      - name: global_rank
+        tests:
+          - not_null:
+              config:
+                where: "meets_volume_threshold"
+      - name: metro_rank
+        tests:
+          - not_null:
+              config:
+                where: "meets_volume_threshold"
+
+  - name: mart_finance_scorecard
+    description: >
+      Grain is one row per hospital. charity_pct_of_revenue /
+      uncompensated_pct_of_revenue use net_patient_revenue as the
+      denominator and are NULL (not a garbage negative/divide-by-zero
+      value) for the 5 hospitals with non-positive net_patient_revenue
+      (see model SQL comment).
+    columns:
+      - name: hospital_key
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_burden_vs_community
+    description: >
+      Grain is one row per hospital (mart_finance_scorecard + dim_geography
+      community stats, not pre-aggregated). uninsured_rate is NULL for the
+      138 hospitals with no CBSA (rural, outside any metro area) -- not_null
+      is scoped to hospitals that have one.
+    columns:
+      - name: hospital_key
+        tests:
+          - not_null
+          - unique
+      - name: uninsured_rate
+        tests:
+          - not_null:
+              config:
+                where: "metro_name is not null"

@@ -33,6 +33,18 @@ select
     c.net_income_from_service_to_patients,
     c.total_assets,
     c.total_liabilities,
-    c.total_fund_balances
+    c.total_fund_balances,
+    c.net_patient_revenue,
+    -- NULL when cost_to_charge_ratio itself is NULL (unknown, not an
+    -- outlier); true/false only when we actually have a value to judge.
+    -- A few of these are implausible (CMS reporting errors upstream in
+    -- total_charges, not something we can correct here); others near 1-2x
+    -- are plausible for hospitals that don't bill fee-for-service (e.g.
+    -- Kaiser Permanente). Flagged, not excluded or capped, so the raw
+    -- reported figures stay intact for whoever queries this table.
+    case
+        when c.cost_to_charge_ratio is null then null
+        else c.cost_to_charge_ratio < 0 or c.cost_to_charge_ratio > 1
+    end as is_ccr_outlier
 from cost_report c
 inner join hospitals h on c.ccn = h.ccn

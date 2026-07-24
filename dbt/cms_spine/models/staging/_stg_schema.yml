@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: stg_hospital_general_info
+    description: Cleaned CMS Hospital General Information, filtered to Acute Care Hospitals. One row per CCN.
+    columns:
+      - name: facility_id
+        description: CMS Certification Number (CCN).
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_cost_report
+    description: CMS Hospital Cost Report, deduplicated to the latest fiscal year per CCN.
+    columns:
+      - name: ccn
+        description: CMS Certification Number.
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_census_acs
+    description: Census ACS 5-year estimates. One row per CBSA.
+    columns:
+      - name: cbsa_code
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_zip_cbsa_crosswalk
+    description: >
+      HUD ZIP-to-CBSA crosswalk. Many-to-many by design (a ZIP can span
+      multiple CBSAs and a CBSA spans many ZIPs), so neither key is tested
+      for uniqueness here.
+    columns:
+      - name: zip_code
+        tests:
+          - not_null
+      - name: cbsa_code
+        tests:
+          - not_null
+
+  - name: stg_medicare_inpatient
+    description: CMS Medicare Inpatient Hospitals by Provider and DRG. Grain is hospital x DRG.
+    columns:
+      - name: ccn
+        tests:
+          - not_null
+      - name: drg_code
+        tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - ccn
+              - drg_code

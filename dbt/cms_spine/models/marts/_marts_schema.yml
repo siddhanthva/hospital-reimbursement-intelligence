@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: dim_hospital
+    description: One row per hospital (CCN), enriched with CBSA, cost-report ownership, and RUCA rurality.
+    columns:
+      - name: hospital_key
+        tests:
+          - not_null
+          - unique
+      - name: ccn
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_drg
+    description: DRG-to-service-line lookup, a thin passthrough of seed_drg_service_line.
+    columns:
+      - name: drg_key
+        tests:
+          - not_null
+          - unique
+      - name: drg_code
+        tests:
+          - not_null
+          - unique
+      - name: service_line
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - Cardiology
+                  - Orthopedics
+                  - Neurology
+                  - Oncology
+                  - Pulmonology/Respiratory
+                  - Gastroenterology
+                  - Renal/Urology
+                  - Obstetrics
+                  - General Surgery
+                  - General Medicine
+                  - Psychiatry
+                  - Other
+
+  - name: dim_geography
+    description: One row per CBSA with Census ACS demographics.
+    columns:
+      - name: geography_key
+        tests:
+          - not_null
+          - unique
+      - name: cbsa_code
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_medicare_drg
+    description: Grain is hospital x DRG.
+    columns:
+      - name: hospital_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_hospital')
+                field: hospital_key
+      - name: drg_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_drg')
+                field: drg_key
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - hospital_key
+              - drg_key
+
+  - name: fct_hospital_finance
+    description: One row per hospital (stg_cost_report is already deduped to the latest fiscal year per CCN).
+    columns:
+      - name: hospital_key
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('dim_hospital')
+                field: hospital_key
+      - name: cost_to_charge_ratio
+        description: >
+          ~1% NULL in this table (down from ~24% in raw cost_report --
+          nearly all of that sparsity belongs to non-acute-care facility
+          types already excluded by dim_hospital's filter). Legitimate
+          missing data, not a pipeline defect, so not_null is severity warn.
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: is_ccr_outlier
+        description: True where cost_to_charge_ratio is outside [0, 1]. See assert_ccr_between_0_and_1.
