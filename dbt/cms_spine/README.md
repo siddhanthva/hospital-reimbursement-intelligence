@@ -193,6 +193,11 @@ upward. That's a deliberate scope boundary, not an oversight.
 
 ### Documentation and lineage
 
+**Live docs (Day 9):** https://siddhanthva.github.io/hospital-reimbursement-intelligence/
+-- published from `main` by the `dbt-ci.yml` workflow's `deploy-docs` job, rebuilt on
+every push. Open it in an incognito window to confirm it's actually public, not just
+visible to a logged-in GitHub session.
+
 `dbt docs generate` builds `target/catalog.json` / `target/manifest.json`;
 `dbt docs serve` renders those into the interactive docs site + DAG. This
 session has no browser to click through that UI, so `docs/lineage_graph.png`
