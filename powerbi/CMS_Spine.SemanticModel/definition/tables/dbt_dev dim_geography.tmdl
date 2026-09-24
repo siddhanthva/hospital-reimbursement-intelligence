@@ -1,0 +1,94 @@
+table 'dbt_dev dim_geography'
+	lineageTag: bf8cfb69-61b3-4b58-94df-de1f480f656c
+
+	column geography_key
+		dataType: string
+		lineageTag: fdcc0591-0287-4555-b33e-feb0eec78c04
+		summarizeBy: none
+		sourceColumn: geography_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column cbsa_code
+		dataType: string
+		lineageTag: 363a9544-4fb0-4b92-8510-4dd55640afc6
+		summarizeBy: none
+		sourceColumn: cbsa_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column metro_name
+		dataType: string
+		lineageTag: 06bef04d-0f5d-443f-879c-73ce8fd4c246
+		summarizeBy: none
+		sourceColumn: metro_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column median_household_income
+		dataType: int64
+		formatString: 0
+		lineageTag: 28702464-d910-4f4f-9708-df5a34e1ceaf
+		summarizeBy: sum
+		sourceColumn: median_household_income
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_population
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ed4ce71-7a83-4893-ba42-286bb79f7318
+		summarizeBy: sum
+		sourceColumn: total_population
+
+		annotation SummarizationSetBy = Automatic
+
+	column median_age
+		dataType: double
+		lineageTag: e8e27ce2-e490-49d9-9513-0e4f410fe0de
+		summarizeBy: sum
+		sourceColumn: median_age
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column insurance_universe
+		dataType: int64
+		formatString: 0
+		lineageTag: 8c725ae0-cc73-44fe-a8ec-a5923f6ab156
+		summarizeBy: sum
+		sourceColumn: insurance_universe
+
+		annotation SummarizationSetBy = Automatic
+
+	column uninsured_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 795e7a9b-13f4-458e-bedd-aeeca10ea306
+		summarizeBy: sum
+		sourceColumn: uninsured_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column uninsured_rate
+		dataType: double
+		lineageTag: e45af6ae-e4f8-4bb6-9a6b-266762e39bc6
+		summarizeBy: sum
+		sourceColumn: uninsured_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'dbt_dev dim_geography' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "dim_geography"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

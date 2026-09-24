@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "CMS_Spine"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "8e550b8b-b85e-4816-aa7b-18ab3967087c"
+  }
+}

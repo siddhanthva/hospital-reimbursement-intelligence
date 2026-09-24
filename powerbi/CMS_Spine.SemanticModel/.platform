@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "CMS_Spine"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "86b6ea57-130b-4a9e-8970-4576a46c0b36"
+  }
+}

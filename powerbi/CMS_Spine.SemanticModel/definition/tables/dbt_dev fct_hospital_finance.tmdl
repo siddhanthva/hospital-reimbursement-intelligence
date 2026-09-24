@@ -1,0 +1,233 @@
+table 'dbt_dev fct_hospital_finance'
+	lineageTag: 244cf870-add8-4750-a9c3-d78e42a1c4e3
+
+	column hospital_key
+		dataType: string
+		lineageTag: 6835f4ea-0327-46f5-b0d6-e14a8f807030
+		summarizeBy: none
+		sourceColumn: hospital_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column fiscal_year_begin_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fc5d3c28-137b-4b01-8286-8b59772321b9
+		summarizeBy: none
+		sourceColumn: fiscal_year_begin_date
+
+		variation Variation
+			isDefault
+			relationship: a59aec9e-f2d5-4df4-bfdd-0cf236ffa640
+			defaultHierarchy: LocalDateTable_bfe580b2-1cc3-46a8-85b7-f17cef52d716.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column fiscal_year_end_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1da8a5ac-99a2-4cd4-9012-ba8d349d1259
+		summarizeBy: none
+		sourceColumn: fiscal_year_end_date
+
+		variation Variation
+			isDefault
+			relationship: 22e713e7-02f0-4201-8b7e-a1fd76bc23d1
+			defaultHierarchy: LocalDateTable_64761a66-bffd-4a7e-9f6c-0c6d34842beb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column number_of_beds
+		dataType: double
+		lineageTag: 8958de03-a6e4-4aef-88d6-6745006cc6d9
+		summarizeBy: sum
+		sourceColumn: number_of_beds
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_bed_days_available
+		dataType: double
+		lineageTag: 2e24d3c7-a98e-4649-ab01-01a0b0c07f52
+		summarizeBy: sum
+		sourceColumn: total_bed_days_available
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_costs
+		dataType: double
+		lineageTag: 729cc579-afc0-465e-9b85-a7f0909c25de
+		summarizeBy: sum
+		sourceColumn: total_costs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_charges
+		dataType: double
+		lineageTag: c4e0d6f8-bffd-4f4b-9261-96c3b6a9dd57
+		summarizeBy: sum
+		sourceColumn: total_charges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column inpatient_total_charges
+		dataType: double
+		lineageTag: 36458736-ad53-4718-9e32-8d1e03f4c7c3
+		summarizeBy: sum
+		sourceColumn: inpatient_total_charges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column outpatient_total_charges
+		dataType: double
+		lineageTag: 893bacca-aebd-4bfb-a5fe-dec2cd8ab044
+		summarizeBy: sum
+		sourceColumn: outpatient_total_charges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cost_to_charge_ratio
+		dataType: double
+		lineageTag: 82c49d6a-7521-4679-9f44-e0eece2aaf60
+		summarizeBy: sum
+		sourceColumn: cost_to_charge_ratio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column charity_care_cost
+		dataType: double
+		lineageTag: 9a42f116-7dce-4cf8-ab9a-6f7c8a8ac099
+		summarizeBy: sum
+		sourceColumn: charity_care_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column bad_debt_expense
+		dataType: double
+		lineageTag: de7ad34b-479b-4cbd-97e9-33959fddeffc
+		summarizeBy: sum
+		sourceColumn: bad_debt_expense
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column uncompensated_care_cost
+		dataType: double
+		lineageTag: c87ef4b3-a822-42ab-af95-702a78d1e037
+		summarizeBy: sum
+		sourceColumn: uncompensated_care_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_unreimbursed_uncompensated_care
+		dataType: double
+		lineageTag: 374c059c-b8a0-4050-a45c-0733402f5d7a
+		summarizeBy: sum
+		sourceColumn: total_unreimbursed_uncompensated_care
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_income
+		dataType: double
+		lineageTag: 257d8cd4-bd78-4162-8fbc-4e93ddef263a
+		summarizeBy: sum
+		sourceColumn: net_income
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_income_from_service_to_patients
+		dataType: double
+		lineageTag: 3fb29541-7dfa-4c89-bec1-0d3cd5c393b0
+		summarizeBy: sum
+		sourceColumn: net_income_from_service_to_patients
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_assets
+		dataType: double
+		lineageTag: 25406e06-0423-435a-9a32-b81ff212af36
+		summarizeBy: sum
+		sourceColumn: total_assets
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_liabilities
+		dataType: double
+		lineageTag: 4a1c5a69-9aae-4319-b5db-994308564343
+		summarizeBy: sum
+		sourceColumn: total_liabilities
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_fund_balances
+		dataType: double
+		lineageTag: f0b33fbe-5977-4982-b928-c681beedd99a
+		summarizeBy: sum
+		sourceColumn: total_fund_balances
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_patient_revenue
+		dataType: double
+		lineageTag: 11a78c8d-7361-4f08-a628-af8e817fa886
+		summarizeBy: sum
+		sourceColumn: net_patient_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_ccr_outlier
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3d5b4e41-e3d7-4c49-bd11-3efaf5faf1fe
+		summarizeBy: none
+		sourceColumn: is_ccr_outlier
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dbt_dev fct_hospital_finance' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "fct_hospital_finance"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

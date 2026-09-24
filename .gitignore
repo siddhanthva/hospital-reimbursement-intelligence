@@ -25,3 +25,10 @@ dbt_packages/
 # dbt writes this anonymous-usage-tracking id file into whatever --profiles-dir
 # it's pointed at, including ci_profiles/ during local CI-profile testing
 .user.yml
+
+# Power BI project (.pbip): .pbi/ holds machine-local cache and editor state,
+# not shareable definitions -- notably cache.abf, a multi-MB local copy of the
+# imported data itself. The .pbip/.Report/.SemanticModel definition files
+# (TMDL, JSON) are the actual source-controlled artifacts and are NOT ignored.
+**/.pbi/
+*.abf

@@ -1,0 +1,95 @@
+table 'dbt_dev mart_burden_vs_community'
+	lineageTag: 24cf667d-8f49-4914-ac89-3f4441f1b35e
+
+	column hospital_key
+		dataType: string
+		lineageTag: d49ca5de-9f43-41dd-8461-a87504cc1848
+		summarizeBy: none
+		sourceColumn: hospital_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_name
+		dataType: string
+		lineageTag: a41c68f1-d0de-42e9-b8d9-540b69f17d82
+		summarizeBy: none
+		sourceColumn: hospital_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column metro_name
+		dataType: string
+		lineageTag: 215796a8-22b7-4484-a831-a7471b9a0ac5
+		summarizeBy: none
+		sourceColumn: metro_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_ownership
+		dataType: string
+		lineageTag: 72ca6fb8-0892-4b52-ba34-aaf39e148bc7
+		summarizeBy: none
+		sourceColumn: hospital_ownership
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_patient_revenue
+		dataType: double
+		lineageTag: 37be2cdd-5e55-4b44-8769-bef1e0c0af1c
+		summarizeBy: sum
+		sourceColumn: net_patient_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column charity_pct_of_revenue
+		dataType: double
+		lineageTag: a7c1014d-f722-4e40-9ac2-a6f69675a14a
+		summarizeBy: sum
+		sourceColumn: charity_pct_of_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column uncompensated_pct_of_revenue
+		dataType: double
+		lineageTag: 594d681b-6bc4-4693-a625-c37ba43d4029
+		summarizeBy: sum
+		sourceColumn: uncompensated_pct_of_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column median_household_income
+		dataType: int64
+		formatString: 0
+		lineageTag: a6d070ad-4b7a-46f3-87d5-7068292c3c95
+		summarizeBy: sum
+		sourceColumn: median_household_income
+
+		annotation SummarizationSetBy = Automatic
+
+	column uninsured_rate
+		dataType: double
+		lineageTag: 6061805d-3731-4603-8e81-562f5e9b6a0c
+		summarizeBy: sum
+		sourceColumn: uninsured_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'dbt_dev mart_burden_vs_community' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "mart_burden_vs_community"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

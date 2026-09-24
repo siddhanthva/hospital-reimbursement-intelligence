@@ -1,0 +1,124 @@
+table 'dbt_dev mart_finance_scorecard'
+	lineageTag: 444b8c5e-5f34-4d42-a2db-1989b25b3fe4
+
+	column hospital_key
+		dataType: string
+		lineageTag: b73da669-eb6c-4959-ada5-bc6d2ffc14f9
+		summarizeBy: none
+		sourceColumn: hospital_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_name
+		dataType: string
+		lineageTag: a070ccfb-3705-41b5-8424-c102e489e44c
+		summarizeBy: none
+		sourceColumn: hospital_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column cbsa_code
+		dataType: string
+		lineageTag: 0ac9f39f-4f19-4268-8258-3770c2e76f45
+		summarizeBy: none
+		sourceColumn: cbsa_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column metro_name
+		dataType: string
+		lineageTag: f3b6e615-99e6-46aa-8247-50addcfd18c7
+		summarizeBy: none
+		sourceColumn: metro_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_ownership
+		dataType: string
+		lineageTag: 75365e21-70be-407d-8c10-d0fd702ece9b
+		summarizeBy: none
+		sourceColumn: hospital_ownership
+
+		annotation SummarizationSetBy = Automatic
+
+	column number_of_beds
+		dataType: double
+		lineageTag: 8a75ca33-c2fa-46a7-86c0-9b3df5ffdc9a
+		summarizeBy: sum
+		sourceColumn: number_of_beds
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_patient_revenue
+		dataType: double
+		lineageTag: 18a33b18-cb37-4de9-ae7d-65a29b560b2f
+		summarizeBy: sum
+		sourceColumn: net_patient_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column charity_care_cost
+		dataType: double
+		lineageTag: 52240667-bbcd-435f-a8f5-93cdd52ed5e7
+		summarizeBy: sum
+		sourceColumn: charity_care_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column uncompensated_care_cost
+		dataType: double
+		lineageTag: 0ca3b307-1159-4866-9dd8-3bbd3fc43498
+		summarizeBy: sum
+		sourceColumn: uncompensated_care_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column net_income
+		dataType: double
+		lineageTag: fdcf3f40-ffab-4871-ab5d-f4f805bd6d7c
+		summarizeBy: sum
+		sourceColumn: net_income
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column charity_pct_of_revenue
+		dataType: double
+		lineageTag: af2c3a65-1189-495c-9542-6e60c88c745a
+		summarizeBy: sum
+		sourceColumn: charity_pct_of_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column uncompensated_pct_of_revenue
+		dataType: double
+		lineageTag: 806c3383-c775-4ed3-9eaa-c45ec6383d0f
+		summarizeBy: sum
+		sourceColumn: uncompensated_pct_of_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'dbt_dev mart_finance_scorecard' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "mart_finance_scorecard"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

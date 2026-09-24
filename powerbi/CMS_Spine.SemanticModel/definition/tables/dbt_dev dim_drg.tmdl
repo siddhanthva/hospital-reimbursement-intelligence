@@ -1,0 +1,47 @@
+table 'dbt_dev dim_drg'
+	lineageTag: 3e36de97-99b5-453b-a7cd-b7fd28e536b3
+
+	column drg_key
+		dataType: string
+		lineageTag: 15ac76ae-444e-4985-86a0-7a047349a2f8
+		summarizeBy: none
+		sourceColumn: drg_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_code
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b1c55d7-c4c9-4233-abcd-0741a5fa11c2
+		summarizeBy: none
+		sourceColumn: drg_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_description
+		dataType: string
+		lineageTag: aa848d3e-b026-426b-9135-20b09ac0cc43
+		summarizeBy: none
+		sourceColumn: drg_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column service_line
+		dataType: string
+		lineageTag: 1f5dac8d-fc25-4d26-994c-d1df965f0a1c
+		summarizeBy: none
+		sourceColumn: service_line
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dbt_dev dim_drg' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "dim_drg"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,138 @@
+table 'dbt_dev mart_reimbursement_gap'
+	lineageTag: 676f32f9-928a-4c5d-b43e-7c4f4739caca
+
+	column hospital_key
+		dataType: string
+		lineageTag: f360367e-763f-4482-833a-edbc4969a2a9
+		summarizeBy: none
+		sourceColumn: hospital_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_key
+		dataType: string
+		lineageTag: fc4fcaa1-dd14-4ced-9deb-0da616ffecb6
+		summarizeBy: none
+		sourceColumn: drg_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_name
+		dataType: string
+		lineageTag: 14a24880-4091-44c2-bcc9-1e77b244ea99
+		summarizeBy: none
+		sourceColumn: hospital_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column cbsa_code
+		dataType: string
+		lineageTag: e556d172-3186-4a41-9d3b-43664563edf2
+		summarizeBy: none
+		sourceColumn: cbsa_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column metro_name
+		dataType: string
+		lineageTag: 839a281b-314f-4460-abf8-85ea576abdb2
+		summarizeBy: none
+		sourceColumn: metro_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_code
+		dataType: int64
+		formatString: 0
+		lineageTag: d42f7da6-8b90-49b9-9e79-dce29e920d8f
+		summarizeBy: sum
+		sourceColumn: drg_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_description
+		dataType: string
+		lineageTag: fba98af6-b2b1-4c9c-9382-0a890780d0d3
+		summarizeBy: none
+		sourceColumn: drg_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column service_line
+		dataType: string
+		lineageTag: 5a55b7b8-ea29-49f0-ac79-d823b210816a
+		summarizeBy: none
+		sourceColumn: service_line
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_discharges
+		dataType: int64
+		formatString: 0
+		lineageTag: 0603e92c-b08f-4387-ac04-dd43602b6933
+		summarizeBy: sum
+		sourceColumn: total_discharges
+
+		annotation SummarizationSetBy = Automatic
+
+	column charges
+		dataType: double
+		lineageTag: 5fe0396b-98a2-445e-b508-223a10848696
+		summarizeBy: sum
+		sourceColumn: charges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column medicare_payment
+		dataType: double
+		lineageTag: b0d1f4d5-44da-4785-8d1d-fbfdabb6132e
+		summarizeBy: sum
+		sourceColumn: medicare_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cost_to_charge_ratio
+		dataType: double
+		lineageTag: f2f229c1-bd45-406d-8d22-e5258733c048
+		summarizeBy: sum
+		sourceColumn: cost_to_charge_ratio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column derived_cost
+		dataType: double
+		lineageTag: 518c8839-12a8-4f67-a8fc-d4b44963232e
+		summarizeBy: sum
+		sourceColumn: derived_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column margin
+		dataType: double
+		lineageTag: fbc8272d-ef4f-414e-9f9d-3afe14a7e0aa
+		summarizeBy: sum
+		sourceColumn: margin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'dbt_dev mart_reimbursement_gap' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "mart_reimbursement_gap"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

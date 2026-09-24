@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["dbt_dev dim_drg","dbt_dev dim_geography","dbt_dev dim_hospital","dbt_dev fct_hospital_finance","dbt_dev mart_burden_vs_community","dbt_dev mart_finance_scorecard","dbt_dev mart_reimbursement_gap","dbt_dev mart_service_line_margin"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'dbt_dev dim_drg'
+ref table 'dbt_dev dim_geography'
+ref table 'dbt_dev dim_hospital'
+ref table 'dbt_dev fct_hospital_finance'
+ref table DateTableTemplate_7e195c07-6e47-4882-93af-7d67f7a54288
+ref table LocalDateTable_bfe580b2-1cc3-46a8-85b7-f17cef52d716
+ref table LocalDateTable_64761a66-bffd-4a7e-9f6c-0c6d34842beb
+ref table 'dbt_dev mart_burden_vs_community'
+ref table 'dbt_dev mart_finance_scorecard'
+ref table 'dbt_dev mart_reimbursement_gap'
+ref table 'dbt_dev mart_service_line_margin'
+
+ref cultureInfo en-US
+

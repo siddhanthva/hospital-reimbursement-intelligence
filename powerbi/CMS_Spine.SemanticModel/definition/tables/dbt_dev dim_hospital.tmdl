@@ -1,0 +1,188 @@
+table 'dbt_dev dim_hospital'
+	lineageTag: e6847cf7-24d6-4b4a-9e06-6c6c69df0323
+
+	column hospital_key
+		dataType: string
+		lineageTag: 23349f68-f787-48de-a8df-69113c75d2ee
+		summarizeBy: none
+		sourceColumn: hospital_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column ccn
+		dataType: string
+		lineageTag: 8c40f4cb-35f7-4079-b5de-89ed4b80cf4b
+		summarizeBy: none
+		sourceColumn: ccn
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_name
+		dataType: string
+		lineageTag: d83a93a0-8aa0-4bbe-b6ea-de8ff1161a25
+		summarizeBy: none
+		sourceColumn: hospital_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		lineageTag: 01351156-f3b9-4b54-8526-cf2805923aa8
+		summarizeBy: none
+		sourceColumn: address
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 34152151-78a5-4f21-8366-c70ea1e88be2
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 514e229d-5ae0-4a82-b7f1-a39b94c0494e
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip_code
+		dataType: string
+		lineageTag: 6c6e5edd-cf46-4499-a758-d51539257dfb
+		summarizeBy: none
+		sourceColumn: zip_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column county
+		dataType: string
+		lineageTag: fdc30fb8-439b-4486-8476-864a96009fbd
+		summarizeBy: none
+		sourceColumn: county
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone_number
+		dataType: string
+		lineageTag: a4efb686-50e8-4225-945b-d4b332346f6b
+		summarizeBy: none
+		sourceColumn: phone_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_ownership
+		dataType: string
+		lineageTag: 65733cda-37fe-4702-9484-f846a93c5144
+		summarizeBy: none
+		sourceColumn: hospital_ownership
+
+		annotation SummarizationSetBy = Automatic
+
+	column emergency_services
+		dataType: string
+		lineageTag: 5dacd0fc-f362-4b86-8c7e-5ee023e76f05
+		summarizeBy: none
+		sourceColumn: emergency_services
+
+		annotation SummarizationSetBy = Automatic
+
+	column birthing_friendly_designation
+		dataType: string
+		lineageTag: f5b0bfc7-c387-4db3-9fb8-111462037e3b
+		summarizeBy: none
+		sourceColumn: birthing_friendly_designation
+
+		annotation SummarizationSetBy = Automatic
+
+	column hospital_overall_rating
+		dataType: int64
+		formatString: 0
+		lineageTag: 48f349f3-28eb-419c-866b-736f60b82976
+		summarizeBy: sum
+		sourceColumn: hospital_overall_rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column cbsa_code
+		dataType: string
+		lineageTag: dceb4b6b-5a3b-43e5-9c0b-f177d4de6d02
+		summarizeBy: none
+		sourceColumn: cbsa_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column ownership_type
+		dataType: int64
+		formatString: 0
+		lineageTag: a38cf9b7-83eb-487f-a2f1-3f660f1c44aa
+		summarizeBy: sum
+		sourceColumn: ownership_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column rural_urban
+		dataType: string
+		lineageTag: 5aa415b3-3c6b-460d-a730-0c81a96103b0
+		summarizeBy: none
+		sourceColumn: rural_urban
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_type
+		dataType: int64
+		formatString: 0
+		lineageTag: eed25ea7-609c-471a-b859-1fa2ff2cc879
+		summarizeBy: sum
+		sourceColumn: provider_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column medicare_payment_cbsa
+		dataType: string
+		lineageTag: fd3d6585-dc3b-431e-a285-5f4bb5346ffe
+		summarizeBy: none
+		sourceColumn: medicare_payment_cbsa
+
+		annotation SummarizationSetBy = Automatic
+
+	column ruca_code
+		dataType: double
+		lineageTag: 14ab6b22-cf3c-40b6-b30f-74f4698590a0
+		summarizeBy: sum
+		sourceColumn: ruca_code
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ruca_description
+		dataType: string
+		lineageTag: e11b759a-8a78-451a-bf00-77113fc7d907
+		summarizeBy: none
+		sourceColumn: ruca_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_cbsa_reclassified
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a0e9bfbf-4d2e-4d57-963c-82972f2b4820
+		summarizeBy: none
+		sourceColumn: is_cbsa_reclassified
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dbt_dev dim_hospital' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "dim_hospital"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

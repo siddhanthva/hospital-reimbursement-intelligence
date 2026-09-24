@@ -1,0 +1,105 @@
+table 'dbt_dev mart_service_line_margin'
+	lineageTag: 78bfeedd-0ca0-4cc0-b442-f554d520a744
+
+	column service_line_margin_key
+		dataType: string
+		lineageTag: 3b4bf4ce-a4e0-4ddb-acd1-ada67b6d0a94
+		summarizeBy: none
+		sourceColumn: service_line_margin_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column service_line
+		dataType: string
+		lineageTag: d4bdbb7a-c791-4df9-a968-25a883b148b6
+		summarizeBy: none
+		sourceColumn: service_line
+
+		annotation SummarizationSetBy = Automatic
+
+	column metro_name
+		dataType: string
+		lineageTag: dd8961ae-1e41-49f4-a339-51b8c5901a96
+		summarizeBy: none
+		sourceColumn: metro_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_margin
+		dataType: double
+		lineageTag: 5cf0764b-8fc2-4764-977f-cf566c4031de
+		summarizeBy: sum
+		sourceColumn: avg_margin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_medicare_payment
+		dataType: double
+		lineageTag: 52afc4b6-366f-417a-916f-c03ece21decd
+		summarizeBy: sum
+		sourceColumn: total_medicare_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_derived_cost
+		dataType: double
+		lineageTag: ff8fd239-9871-4f9d-b8d3-16cf27a4cdad
+		summarizeBy: sum
+		sourceColumn: total_derived_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_discharge_volume
+		dataType: double
+		lineageTag: 4ea22978-b82e-47ed-a01d-fe2929ae981a
+		summarizeBy: sum
+		sourceColumn: total_discharge_volume
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column meets_volume_threshold
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0eb157d5-a06b-46cc-bd10-98f5f6e13fa5
+		summarizeBy: none
+		sourceColumn: meets_volume_threshold
+
+		annotation SummarizationSetBy = Automatic
+
+	column global_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 23d5b446-fc1f-4aaf-a104-0c04659f2e03
+		summarizeBy: sum
+		sourceColumn: global_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column metro_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b447e1f-4bed-448f-b661-e391dc094242
+		summarizeBy: sum
+		sourceColumn: metro_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dbt_dev mart_service_line_margin' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("ep-lively-dew-ah9fnhkh.c-3.us-east-1.aws.neon.tech", "neondb"),
+				  #"Navigation 1" = Source{[Schema = "dbt_dev", Item = "mart_service_line_margin"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

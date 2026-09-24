@@ -1,0 +1,59 @@
+relationship a59aec9e-f2d5-4df4-bfdd-0cf236ffa640
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'dbt_dev fct_hospital_finance'.fiscal_year_begin_date
+	toColumn: LocalDateTable_bfe580b2-1cc3-46a8-85b7-f17cef52d716.Date
+
+relationship 22e713e7-02f0-4201-8b7e-a1fd76bc23d1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'dbt_dev fct_hospital_finance'.fiscal_year_end_date
+	toColumn: LocalDateTable_64761a66-bffd-4a7e-9f6c-0c6d34842beb.Date
+
+relationship AutoDetected_366ccfbe-7569-4e24-9f0e-303a40911ad8
+	fromColumn: 'dbt_dev mart_reimbursement_gap'.drg_key
+	toColumn: 'dbt_dev dim_drg'.drg_key
+
+relationship AutoDetected_0fd4fcb1-a30a-41a9-98a0-f46a15287cf1
+	fromColumn: 'dbt_dev dim_hospital'.cbsa_code
+	toColumn: 'dbt_dev dim_geography'.cbsa_code
+
+relationship AutoDetected_9028f76b-def7-4e48-a671-d3e570154815
+	fromColumn: 'dbt_dev mart_finance_scorecard'.cbsa_code
+	toColumn: 'dbt_dev dim_geography'.cbsa_code
+
+relationship AutoDetected_8d4046b7-e1c6-48d7-b0d8-770e1bef83d8
+	fromColumn: 'dbt_dev mart_reimbursement_gap'.cbsa_code
+	toColumn: 'dbt_dev dim_geography'.cbsa_code
+
+relationship AutoDetected_585ac5cf-ea47-4007-b025-72ba0345228a
+	fromColumn: 'dbt_dev mart_burden_vs_community'.metro_name
+	toColumn: 'dbt_dev dim_geography'.metro_name
+
+relationship AutoDetected_3da4663b-ac68-41e1-8acb-c6c27ae1520a
+	fromColumn: 'dbt_dev mart_service_line_margin'.metro_name
+	toColumn: 'dbt_dev dim_geography'.metro_name
+
+relationship AutoDetected_bd6baa5a-c39c-47f2-8786-270b468605bc
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dbt_dev fct_hospital_finance'.hospital_key
+	toColumn: 'dbt_dev dim_hospital'.hospital_key
+
+relationship AutoDetected_8fa60dcc-2cf9-418c-95ec-a346a4b7f5a4
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dbt_dev mart_burden_vs_community'.hospital_key
+	toColumn: 'dbt_dev dim_hospital'.hospital_key
+
+relationship AutoDetected_c23e19da-2d98-4193-a8c3-8f4364f8e486
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dbt_dev mart_finance_scorecard'.hospital_key
+	toColumn: 'dbt_dev dim_hospital'.hospital_key
+
+relationship AutoDetected_cafbf2fc-b55d-4ab7-9a96-35df1cea6102
+	isActive: false
+	fromColumn: 'dbt_dev mart_reimbursement_gap'.hospital_key
+	toColumn: 'dbt_dev dim_hospital'.hospital_key
+
