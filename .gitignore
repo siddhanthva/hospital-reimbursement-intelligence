@@ -21,3 +21,7 @@ __pycache__/
 target/
 logs/
 dbt_packages/
+
+# dbt writes this anonymous-usage-tracking id file into whatever --profiles-dir
+# it's pointed at, including ci_profiles/ during local CI-profile testing
+.user.yml

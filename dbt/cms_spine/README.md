@@ -173,6 +173,24 @@ existing mart rather than duplicated into `dim_hospital`.
    outliers (r rises to 0.41 with the top 2 most extreme hospitals removed). Scatter plot
    saved to [`docs/burden_scatter.png`](burden_scatter.png).
 
+### Continuous integration (Day 9)
+
+`.github/workflows/dbt-ci.yml` runs `dbt debug` -> `dbt deps` -> `dbt seed` -> `dbt run` ->
+`dbt test` on every push/PR to `main` and on manual dispatch, against a dedicated `dbt_ci`
+schema in the same Neon database -- not `dbt_dev`, so an automated run never touches the
+tables Power BI reads from. On a push to `main`, a second job runs `dbt docs generate` and
+publishes the result to GitHub Pages.
+
+`ci_profiles/profiles.yml` holds only `env_var()` references, never credentials; the actual
+values (`NEON_HOST`/`NEON_USER`/`NEON_PASSWORD`/`NEON_DBNAME`) live in GitHub Actions
+secrets. dbt-core/dbt-postgres versions are pinned in the workflow to the exact versions
+verified locally (1.12.0rc3 / 1.10.2), so a CI failure means something in the code changed,
+not that CI happened to resolve a different dbt version than the laptop.
+
+**Scope note:** CI does not perform raw ingestion. It assumes `raw.*` already exists in
+Neon (loaded once, manually, on Day 1) and rebuilds/validates everything from staging
+upward. That's a deliberate scope boundary, not an oversight.
+
 ### Documentation and lineage
 
 `dbt docs generate` builds `target/catalog.json` / `target/manifest.json`;

@@ -1,0 +1,86 @@
+name: dbt CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Avoid two runs racing to build the same dbt_ci schema.
+concurrency:
+  group: dbt-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  dbt:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dbt/cms_spine
+
+    env:
+      NEON_HOST: ${{ secrets.NEON_HOST }}
+      NEON_USER: ${{ secrets.NEON_USER }}
+      NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
+      NEON_DBNAME: ${{ secrets.NEON_DBNAME }}
+      DBT_PROFILES_DIR: ${{ github.workspace }}/ci_profiles
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Pinned to the exact versions verified locally, so CI behavior matches
+      # the laptop instead of drifting to whatever "latest" happens to be.
+      - name: Install dbt
+        run: pip install dbt-core==1.12.0rc3 dbt-postgres==1.10.2
+
+      - name: dbt debug
+        run: dbt debug
+
+      - name: dbt deps
+        run: dbt deps
+
+      # The DRG -> service_line seed must exist before dim_drg (and everything
+      # downstream of it) builds.
+      - name: dbt seed
+        run: dbt seed
+
+      - name: dbt run
+        run: dbt run
+
+      - name: dbt test
+        run: dbt test
+
+      - name: dbt docs generate
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: dbt docs generate
+
+      - name: Upload docs site
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dbt/cms_spine/target
+
+  deploy-docs:
+    needs: dbt
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
