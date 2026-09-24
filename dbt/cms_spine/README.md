@@ -144,6 +144,35 @@ uncompensated_pct_of_revenue) = +0.37` across 2,831 hospitals -- positive
 and modest, not flipped or ~0. Full statistical treatment is Day 8's job,
 not today's.
 
+### Statistical analysis (Day 8)
+
+[`notebooks/day8_statistics.ipynb`](../../notebooks/day8_statistics.ipynb) reads directly
+from the business marts via `pandas.read_sql` (no SQL in the notebook) and runs three
+statistical tests, restarted and executed top-to-bottom with no errors before saving.
+
+`mart_finance_scorecard` gained `number_of_beds` this session -- it already lived in
+`fct_hospital_finance` (from `stg_cost_report`), one join away, so it was added to the
+existing mart rather than duplicated into `dim_hospital`.
+
+1. **Charity care per bed, nonprofit vs. for-profit** (Welch's t-test + Cohen's d): a
+   genuine null result. Nonprofit hospitals had a higher mean (\$41.5K vs \$38.1K/bed) but
+   the difference wasn't significant (p ≈ 0.13) and the effect size was negligible (d ≈
+   0.07). `hospital_ownership` has 9 categories, not 2 -- classified into nonprofit
+   (`Voluntary non-profit - *`) and for-profit (`Proprietary`, `Physician`), with
+   government/tribal ownership (443 hospitals) excluded rather than forced into either
+   bucket.
+2. **95% CIs on service-line margin** (from `mart_service_line_margin`'s service_line x
+   metro `avg_margin` rows): Obstetrics, Gastroenterology, and "Other" have CIs entirely
+   below zero (stable losses); Renal/Urology, Pulmonology, General Medicine, and
+   Psychiatry are entirely above zero (stable profits). Oncology has the highest mean
+   margin of any line but one of the widest CIs (-\$1,169 to +\$4,395, n=131) -- high
+   average profitability driven by a small number of high-variance cases, consistent with
+   the Day 6 finding that Oncology sits at both extremes of the hospital-level ranking.
+3. **Pearson correlation, uninsured rate vs. uncompensated care burden**: r = 0.37 (p «
+   0.001, n=2,831) -- moderate, not "strong" by the standard thresholds, and not driven by
+   outliers (r rises to 0.41 with the top 2 most extreme hospitals removed). Scatter plot
+   saved to [`docs/burden_scatter.png`](burden_scatter.png).
+
 ### Documentation and lineage
 
 `dbt docs generate` builds `target/catalog.json` / `target/manifest.json`;

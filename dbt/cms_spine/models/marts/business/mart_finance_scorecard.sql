@@ -18,6 +18,11 @@
 -- human-readable category, e.g. "Voluntary non-profit - Private") rather
 -- than the cost report's numeric ownership_type code, since this mart is
 -- meant to be read directly by non-technical stakeholders.
+--
+-- number_of_beds comes straight from fct_hospital_finance (cost report's
+-- own bed count) rather than being added to dim_hospital -- it's already
+-- a cost-report fact attribute one join away, so duplicating it into the
+-- dimension would just be redundant. 8/3,075 hospitals have it NULL.
 with finance as (
 
     select *
@@ -45,6 +50,7 @@ select
     h.cbsa_code,
     g.metro_name,
     h.hospital_ownership,
+    f.number_of_beds,
     f.net_patient_revenue,
     f.charity_care_cost,
     f.uncompensated_care_cost,
