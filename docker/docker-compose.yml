@@ -1,0 +1,25 @@
+services:
+  dbt:
+    build: ./dbt
+    working_dir: /usr/app
+    volumes:
+      - ../dbt/cms_spine:/usr/app
+      - ../docker_profiles:/root/.dbt
+    env_file:
+      - ../.env
+    environment:
+      DBT_PROFILES_DIR: /root/.dbt
+
+  jupyter:
+    build: ./jupyter
+    working_dir: /workspace/notebooks
+    volumes:
+      # whole project root, not just notebooks/ -- day8_statistics.ipynb
+      # saves its chart to a path relative to the repo root
+      # (../dbt/cms_spine/docs/burden_scatter.png), so the mount needs to
+      # mirror the real repo layout for that relative path to resolve.
+      - ..:/workspace
+    env_file:
+      - ../.env
+    ports:
+      - "127.0.0.1:8888:8888"
